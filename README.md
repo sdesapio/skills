@@ -7,6 +7,7 @@ Reusable [Cursor](https://cursor.com) agent skills for iOS and macOS development
 | Skill | Description |
 |---|---|
 | [marketing-capture](marketing-capture/) | Automated App Store screenshot capture for iOS and watchOS apps |
+| [thoughts](thoughts/) | Epistemological framework for reasoning with integrity, objectivity, and honesty |
 
 ## Installation
 
