@@ -1,0 +1,4 @@
+interface:
+  display_name: "Prepare Handoff"
+  short_description: "Save concise project state and a fresh-chat prompt"
+  default_prompt: "Use $handoff to prepare handoff: update concise project state and give me a ready-to-paste prompt for a fresh chat."
