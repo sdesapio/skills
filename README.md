@@ -146,9 +146,18 @@ If you used Option B, repeat the copy steps (skill directory and, for thoughts, 
 Once installed, skills activate automatically when you describe the relevant task to the agent. For example:
 
 - "Build the screen capture mechanism" or "add marketing screenshots" triggers the **marketing-capture** skill.
-- Ending a message with **"Thoughts?"** triggers the **thoughts** skill (full Loop + substance receipt), gated by the always-apply compliance rule.
+- A substantive **"Thoughts?"** request triggers the **thoughts** skill's council workflow and compact substance receipt. Three participants form independent positions, cross-review them, and verify the chair's final synthesis. The chair selects distinct available reasoning models when the host supports it.
+- Ordinary opinion requests and challenges use the lighter Method. "Quick take, no council" overrides full review. Quoting the trigger or discussing the skill does not automatically launch a council.
+- The workflow uses the host's native subagent tools. With limited model diversity it reports the actual diversity; with missing participants it reports partial review; with delegation unavailable it discloses a single-model fallback. Installing this skill does not add models, enable tools, or change application settings.
 
-Each skill's `SKILL.md` contains the full instructions the agent follows. The `examples.md` (when present) provides concrete implementation patterns from real projects. Thoughts also ships `thoughts-skill.mdc` — install it into `~/.cursor/rules/` so `"Thoughts?"` is enforced every turn.
+Each skill's `SKILL.md` contains the full instructions the agent follows. The `examples.md` (when present) provides concrete implementation patterns from real projects. Thoughts also ships `thoughts-skill.mdc`, a small Cursor routing rule that delegates to the skill instead of duplicating the review procedure. The managed installer deploys both together.
+
+The Thoughts behavioral fixtures and human-review criteria are in
+[`tests/thoughts-evaluation.md`](tests/thoughts-evaluation.md). They cover the council
+workflow, trigger intent, lightweight overrides, unsupported claims, contradictions,
+equal evidentiary standards, and truthful fallback reporting. Recorded validation
+is in [`tests/thoughts-validation.md`](tests/thoughts-validation.md); smoke tests do
+not establish a measured improvement over the previous skill.
 
 ## License
 
