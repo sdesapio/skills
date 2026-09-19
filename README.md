@@ -1,15 +1,32 @@
 # Cursor Agent Skills
 
-Reusable [Cursor](https://cursor.com) agent skills for iOS and macOS development. Each subdirectory is a self-contained skill that can be installed independently.
+Reusable [Cursor](https://cursor.com) agent skills for iOS and macOS development. Each subdirectory is a self-contained skill that can be installed independently. The handoff skill also works across project types in Codex.
 
 ## Available Skills
 
 | Skill | Description |
 |---|---|
+| [handoff](handoff/) | "Prepare handoff": maintain concise project state and produce a fresh-chat continuation prompt |
 | [marketing-capture](marketing-capture/) | Automated App Store screenshot capture for iOS and watchOS apps |
 | [thoughts](thoughts/) | Epistemological framework for reasoning with integrity, objectivity, and honesty. Requires the companion always-apply rule (`thoughts/thoughts-skill.mdc`). |
 
 ## Installation
+
+### Handoff: personal Codex installation
+
+The repository copy in `handoff/` is the editable source. To make it available
+across your Codex projects, copy that directory into `~/.codex/skills/handoff/`
+(or `$CODEX_HOME/skills/handoff/` when using a custom Codex home). Preserve and
+reconcile any existing local edits before replacing an installed copy.
+Start a fresh chat to load the newly installed skill, then say **"Prepare handoff"**
+or invoke **`$handoff`**.
+
+The skill updates the project's existing state document, keeps active context
+concise, links or archives useful history, and returns a ready-to-paste prompt.
+It adapts to projects without `state.md` or Git. The 100–150 line guideline never
+justifies losing binding decisions, open issues, or verification limitations.
+It does not authorize implementation, committing, pushing, deployment, or
+creating another chat.
 
 ### Thoughts: managed installation (recommended)
 
