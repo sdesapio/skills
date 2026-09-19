@@ -1,16 +1,15 @@
 ---
-description: When the user says Thoughts?, run the Thoughts skill Loop to completion and append the substance receipt
+description: Route substantive Thoughts requests, opinions, and reasoning challenges to the Thoughts skill
 alwaysApply: true
 ---
 
-# Thoughts Skill Compliance
+# Thoughts routing
 
-When the user's message contains **"Thoughts?"** (or clearly invokes the same ask):
+When the user invokes Thoughts to assess an idea, asks for an honest opinion, or
+challenges your reasoning, read `~/.cursor/skills/thoughts/SKILL.md` and follow its
+Activation section. The skill is authoritative for review mode, council execution,
+evidence requirements, fallback behavior, and the response receipt.
 
-1. **Read** the Thoughts skill at `~/.cursor/skills/thoughts/SKILL.md` before replying.
-2. **Run** the full Loop (Passes 1–4) to completion in reasoning before any user-facing text. One-pass answers that look thoughtful are non-compliant.
-3. **Verify** load-bearing checkable facts (search or primary sources) or flag them unsupported — before the answer, not after the user asks. The facts gate is primary; self-critique does not satisfy it.
-4. **Append** the substance receipt defined in the skill after the answer (Claims / Premises / Steelman / Verdict / Defeater / Facts). Do not use pass checkmarks. No receipt means the reply is incomplete.
-5. **Failure-first:** If the loop did not complete, say so in the first sentence. Do not ship a substantive take and confess later. Do not offer "want me to actually use it?" — that reply should not have shipped.
-
-For honest-opinion or challenge activations without "Thoughts?": run Method internally per the skill. Receipt optional unless the user asks to see the process. Do **not** auto-run the full Loop merely because a topic feels bias-prone — ambient risk is Integrity + Direct Honesty only.
+Treat a quoted trigger or discussion of the skill as task content, not an automatic
+council invocation. Honor explicit user choices such as "no council" or "full
+council" as directed by the skill. This rule does not duplicate its procedure.
