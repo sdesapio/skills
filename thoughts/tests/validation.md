@@ -20,7 +20,7 @@ this rollback test.
 
 ## Council execution
 
-The chair used the full council task packet from `thoughts-evaluation.md`.
+The chair used the full council task packet from `evaluation.md`.
 Three separate participants received the complete skill and the same raw packet
 with no inherited conversation history or chair conclusion. Requested model
 configurations were `gpt-6-astra`, `gpt-5.6-sol`, and `gpt-5.6-terra`, each at high
@@ -88,3 +88,26 @@ fixture was supplied locally; no empirical web-retrieval assessment was performe
 Use the remaining fixtures and comparable baseline runs for subsequent evaluation.
 Judge evidence, inference, correction, usefulness, and added effort; do not infer
 improvement from a completed receipt, model count, or agreement alone.
+
+
+## Portable packaging validation — 2026-09-19
+
+The reasoning instructions and Cursor routing rule are byte-identical to the
+previous release. This change reorganizes their distribution and installer.
+
+All 22 automated tests passed on macOS using disposable home directories. CLI
+tests use an empty executable search path and an absolute Python executable, so
+Git is unavailable. Coverage includes Codex-only, Cursor-only, and combined
+installation; adding and updating a target; unchanged-file adoption; local-edit
+and symlink protection; failed writes; interruption recovery; old Git-based
+records and recovery journals; and rollback across the old backup format.
+
+The archive test builds both downloads from an isolated copy of this folder,
+checks their exact file lists and SHA-256 checksums, and confirms repeat builds
+are byte-identical. It extracts the ZIPs, deletes the source folder, and exercises
+installation, update, verification, and repeated rollback with the extracted
+managed package. Tests and development tools are excluded from both downloads;
+only the managed download contains the installer.
+
+These tests validate packaging and installation behavior. They do not add new
+council behavioral evidence or establish support for Windows.
