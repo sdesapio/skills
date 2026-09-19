@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Install committed Thoughts files; Python 3.9+, standard library only."""
+"""Install Thoughts from this folder; Python 3.9+, macOS/Linux, no Git required."""
 
 import argparse
 import base64
@@ -12,18 +12,22 @@ import json
 import os
 from pathlib import Path
 import stat
-import subprocess
 import sys
 import tempfile
 import uuid
 
 
 SOURCES = {
-    ".agents/skills/thoughts/SKILL.md": "thoughts/SKILL.md",
-    ".cursor/skills/thoughts/SKILL.md": "thoughts/SKILL.md",
-    ".cursor/rules/thoughts-skill.mdc": "thoughts/thoughts-skill.mdc",
+    ".agents/skills/thoughts/SKILL.md": "SKILL.md",
+    ".cursor/skills/thoughts/SKILL.md": "SKILL.md",
+    ".cursor/rules/thoughts-skill.mdc": "thoughts-skill.mdc",
 }
-REPO = Path(__file__).resolve().parent.parent
+SKILL_ROOT = Path(__file__).resolve().parent.parent
+TARGETS = {
+    "codex": (".agents/skills/thoughts/SKILL.md",),
+    "cursor": (".cursor/skills/thoughts/SKILL.md", ".cursor/rules/thoughts-skill.mdc"),
+    "both": tuple(SOURCES),
+}
 
 
 class InstallError(Exception):
@@ -34,27 +38,16 @@ def digest(data):
     return hashlib.sha256(data).hexdigest()
 
 
-def git(*args):
-    result = subprocess.run(
-        ["git", "-C", str(REPO), *args], capture_output=True, check=False
-    )
-    if result.returncode:
-        raise InstallError(result.stderr.decode().strip() or "Git command failed")
-    return result.stdout
-
-
 def source_files():
-    revision = git("rev-parse", "HEAD").decode().strip()
     files = {}
     for target, source in SOURCES.items():
-        path = REPO / source
+        path = SKILL_ROOT / source
         if path.is_symlink() or not path.is_file():
             raise InstallError(f"Expected a regular source file: {path}")
-        data = git("show", f"{revision}:{source}")
-        if path.read_bytes() != data or git("diff", "--cached", revision, "--", source):
-            raise InstallError(f"Commit or discard changes to {source} before installing.")
-        files[target] = pack(data, 0o644)
-    return revision, files
+        files[target] = pack(path.read_bytes(), 0o644)
+    # A reproducible identity for the runtime files, independent of Git or location.
+    identity = json.dumps(hashes(files), sort_keys=True, separators=(",", ":")).encode()
+    return digest(identity), files
 
 
 def pack(data, mode):
@@ -75,7 +68,7 @@ def unpack(item):
 
 
 def validate_files(files):
-    if not isinstance(files, dict) or set(files) != set(SOURCES):
+    if not isinstance(files, dict) or (not files or not set(files) <= set(SOURCES)):
         raise InstallError("Snapshot has an unexpected file list.")
     for item in files.values():
         unpack(item)
@@ -88,12 +81,13 @@ def hashes(files):
 def validate_state(value):
     if value is None:
         return
-    if (not isinstance(value, dict) or value.get("schema") != 1
+    if (not isinstance(value, dict) or value.get("schema") not in (1, 2)
             or not isinstance(value.get("revision"), str)
             or len(value["revision"]) not in (40, 64)
             or any(c not in "0123456789abcdef" for c in value["revision"])
             or not isinstance(value.get("files"), dict)
-            or set(value["files"]) != set(SOURCES)
+            or not value["files"] or not set(value["files"]) <= set(SOURCES)
+            or (value.get("schema") == 1 and set(value["files"]) != set(SOURCES))
             or not isinstance(value.get("backup"), str)
             or len(value["backup"]) != 32
             or any(c not in "0123456789abcdef" for c in value["backup"])):
@@ -111,8 +105,6 @@ class Installer:
         self.record = self.root / "state.json"
         self.pending = self.root / "pending.json"
         self.backups = self.root / "backups"
-        for relative in SOURCES:
-            self.safe(self.home / relative)
         self.safe(self.backups)
 
     def safe(self, path):
@@ -142,9 +134,9 @@ class Installer:
         validate_state(value)
         return value
 
-    def snapshot(self):
+    def snapshot(self, names=None):
         files = {}
-        for relative in SOURCES:
+        for relative in (SOURCES if names is None else names):
             path = self.safe(self.home / relative)
             if not path.exists():
                 files[relative] = None
@@ -180,13 +172,16 @@ class Installer:
 
     def apply(self, files):
         validate_files(files)
+        current = self.snapshot(files)
         for relative, item in files.items():
+            if current[relative] == item:
+                continue
             path = self.safe(self.home / relative)
             if item is None:
                 path.unlink(missing_ok=True)
             else:
                 self.write(path, unpack(item), item["mode"])
-        if self.snapshot() != files:
+        if self.snapshot(files) != files:
             raise InstallError("Installed files failed verification.")
 
     @contextlib.contextmanager
@@ -206,17 +201,17 @@ class Installer:
 
     def ensure_expected(self, files, expected):
         actual = hashes(files)
-        changed = [name for name in SOURCES if actual[name] != expected[name]]
+        changed = [name for name in expected if actual.get(name) != expected[name]]
         if changed:
             details = []
             for name in changed:
                 details.append(f"  {self.home / name}\n    expected: {expected[name]}\n    found:    {actual[name]}")
-                source = REPO / SOURCES[name]
+                source = SKILL_ROOT / SOURCES[name]
                 if source.is_file() and files[name]:
                     diff = list(difflib.unified_diff(
                         source.read_text(errors="replace").splitlines(keepends=True),
                         unpack(files[name]).decode(errors="replace").splitlines(keepends=True),
-                        fromfile=f"current repository: {SOURCES[name]}",
+                        fromfile=f"current package: {SOURCES[name]}",
                         tofile=f"installed: {name}",
                     ))
                     details.append("".join(diff[:120]))
@@ -224,14 +219,14 @@ class Installer:
                         details.append("  (Diff truncated; compare the files for the full changes.)")
             raise InstallError(
                 "Unexpected local changes (including missing files); nothing was overwritten:\n"
-                + "\n".join(details) + "\nCompare these with the repository or saved backup and reconcile first."
+                + "\n".join(details) + "\nCompare these with the package or saved backup and reconcile first."
             )
 
     def transaction(self, before, old_state, after, new_state):
         journal = {"schema": 1, "before": before, "old_state": old_state,
                    "after": after, "new_state": new_state}
         # Recheck after planning, immediately before the journal and writes.
-        if self.snapshot() != before or self.state() != old_state:
+        if self.snapshot(before) != before or self.state() != old_state:
             raise InstallError("Installation changed during preflight; run again.")
         self.write_json(self.pending, journal)
         try:
@@ -248,24 +243,29 @@ class Installer:
                 ) from exc
             raise InstallError(f"Installation failed; previous files were restored: {exc}") from exc
 
-    def install(self, dry_run=False):
+    def install(self, dry_run=False, target=None):
         self.require_no_pending()
-        revision, after = source_files()
-        old_state, before = self.state(), self.snapshot()
+        revision, source = source_files()
+        old_state = self.state()
+        # Without --target, update the recorded scope; first install defaults to both.
+        selected = TARGETS[target] if target else (old_state["files"] if old_state else SOURCES)
+        scope = dict.fromkeys([*(old_state["files"] if old_state else ()), *selected])
+        before = self.snapshot(scope)
         if old_state:
             self.ensure_expected(before, old_state["files"])
-        else:
-            # Adopt existing exact matches; never silently adopt divergent copies.
-            expected = {name: after[name]["sha256"] if item else None
-                        for name, item in before.items()}
-            self.ensure_expected(before, expected)
-        if old_state and old_state["revision"] == revision and before == after:
-            print(f"Already installed and verified: {revision[:12]}")
+        unmanaged = {name: source[name]["sha256"] if before[name] else None
+                     for name in selected if not old_state or name not in old_state["files"]}
+        self.ensure_expected(before, unmanaged)
+        after = dict(before)
+        after.update({name: source[name] for name in selected})
+        if (old_state and old_state["schema"] == 2 and before == after
+                and old_state["files"] == hashes(after)):
+            print("Already installed and verified.")
             return
-        for relative in SOURCES:
+        for relative in selected:
             action = "keep" if before[relative] == after[relative] else "install"
             print(f"{action}: {self.home / relative}")
-        print(f"Source revision: {revision}")
+        print(f"Runtime package SHA-256: {revision}")
         if dry_run:
             print("Dry run: no files or installation records changed.")
             return
@@ -273,29 +273,31 @@ class Installer:
         self.write_json(self.backups / f"{backup_id}.json", {
             "schema": 1, "files": before, "state": old_state,
         })
-        new_state = {"schema": 1, "revision": revision, "files": hashes(after), "backup": backup_id}
+        # revision identifies the last source package; files are authoritative when
+        # a user updates one app while retaining an older installation in the other.
+        new_state = {"schema": 2, "revision": revision, "files": hashes(after), "backup": backup_id}
         self.transaction(before, old_state, after, new_state)
-        print(f"Installed and verified all three files. Backup: {self.backups / (backup_id + '.json')}")
+        print(f"Installed and verified. Backup: {self.backups / (backup_id + '.json')}")
 
     def check(self):
         self.require_no_pending()
         state = self.state()
         if not state:
             raise InstallError("No recorded installation. Run --dry-run, then install to adopt matching files.")
-        self.ensure_expected(self.snapshot(), state["files"])
-        print(f"All three installed files match recorded revision {state['revision']}.")
-        # Checking a deployed release does not require a clean/newer checkout.
-        differences = [source for target, source in SOURCES.items()
-                       if not (REPO / source).is_file()
-                       or digest((REPO / source).read_bytes()) != state["files"][target]]
+        self.ensure_expected(self.snapshot(state["files"]), state["files"])
+        print(f"All {len(state['files'])} managed files match the installation record.")
+        differences = [SOURCES[target] for target in state["files"]
+                       if not (SKILL_ROOT / SOURCES[target]).is_file()
+                       or digest((SKILL_ROOT / SOURCES[target]).read_bytes()) != state["files"][target]]
         if differences:
-            print("Repository source differs from this installation: " + ", ".join(sorted(set(differences))))
+            print("Package source differs from this installation: " + ", ".join(sorted(set(differences))))
 
     def rollback(self):
         self.require_no_pending()
-        old_state, before = self.state(), self.snapshot()
+        old_state = self.state()
         if not old_state:
             raise InstallError("No recorded installation to roll back.")
+        before = self.snapshot(old_state["files"])
         self.ensure_expected(before, old_state["files"])
         backup = self.read_json(self.backups / f"{old_state['backup']}.json")
         if not isinstance(backup, dict) or backup.get("schema") != 1:
@@ -303,7 +305,10 @@ class Installer:
         after, new_state = backup.get("files"), backup.get("state")
         validate_files(after)
         validate_state(new_state)
-        if new_state and hashes(after) != new_state["files"]:
+        if set(after) != set(before):
+            raise InstallError("Backup scope does not match the installation record.")
+        if new_state and (not set(new_state["files"]) <= set(after)
+                          or any(hashes(after)[name] != value for name, value in new_state["files"].items())):
             raise InstallError("Backup does not match its installation record.")
         self.transaction(before, old_state, after, new_state)
         label = new_state["revision"] if new_state else "the original, unmanaged installation"
@@ -317,8 +322,10 @@ class Installer:
             validate_files(journal.get(key))
         for key in ("old_state", "new_state"):
             validate_state(journal.get(key))
-        current = self.snapshot()
-        for relative in SOURCES:
+        if set(journal["before"]) != set(journal["after"]):
+            raise InstallError("Interrupted transaction has inconsistent file lists.")
+        current = self.snapshot(journal["before"])
+        for relative in current:
             if current[relative] not in (journal["before"][relative], journal["after"][relative]):
                 raise InstallError(f"File changed after interruption; refusing to overwrite: {self.home / relative}")
         if self.state() not in (journal["old_state"], journal["new_state"]):
@@ -337,14 +344,18 @@ def main():
     action.add_argument("--dry-run", action="store_true", help="show installation changes without writing")
     action.add_argument("--rollback", action="store_true", help="restore the previous installation")
     action.add_argument("--recover", action="store_true", help="undo an interrupted install or rollback")
+    parser.add_argument("--target", choices=tuple(TARGETS),
+                        help="install/update Codex, Cursor, or both (default: recorded scope, initially both)")
     parser.add_argument("--home", type=Path, default=Path.home(), help="alternate home directory for testing")
     args = parser.parse_args()
+    if args.target and (args.check or args.rollback or args.recover):
+        parser.error("--target applies only to installation or --dry-run; other actions cover the recorded transaction")
     try:
         installer = Installer(args.home)
         if args.check:
             installer.check()
         elif args.dry_run:
-            installer.install(dry_run=True)
+            installer.install(dry_run=True, target=args.target)
         else:
             with installer.lock():
                 if args.rollback:
@@ -352,7 +363,7 @@ def main():
                 elif args.recover:
                     installer.recover()
                 else:
-                    installer.install()
+                    installer.install(target=args.target)
         return 0
     except (InstallError, OSError) as exc:
         print(f"Error: {exc}", file=sys.stderr)
