@@ -6,7 +6,7 @@ valid inference.
 
 ## Download and install
 
-[Download thoughts.zip](https://github.com/sdesapio/skills/releases/download/thoughts-v1.0.0/thoughts.zip)
+[Download thoughts.zip](https://github.com/sdesapio/skills/releases/download/thoughts-v1.1.0/thoughts.zip)
 and extract it. It contains one `thoughts/` folder with the skill, these
 instructions, the MIT license, and the companion Cursor rule. No Git, Python,
 or installer is needed for manual installation.
@@ -28,10 +28,21 @@ ZIP can install it without GitHub access. Release assets also include
 
 ## Use
 
-A substantive **"Thoughts?"** request invokes independent council review and a
-compact substance receipt. Ordinary opinion requests and reasoning challenges
-use the lighter Method. **"Quick take, no council"** requests the lighter path.
-Quoting the trigger or discussing this skill does not invoke a council.
+**"Thoughts?"**, a direct skill invocation, opinions, and reasoning challenges
+use the full Method in the current conversation by default. Integrity, evidence,
+identity, and noncontradiction apply in every mode.
+
+Say **"Thoughts? Full council"** or **"Run a council review"** to opt into
+independent council review and its compact substance receipt. Council applies to
+that request and the follow-up work needed to complete it. A new assessment
+returns to Method unless you explicitly keep council enabled for a longer scope.
+**"No council"** and **"quick take"** still select Method; they are unnecessary
+under the default. Asking for a thorough assessment or a receipt alone does not
+activate a council.
+
+The agent may suggest council review when independent scrutiny could help resolve
+a material uncertainty, but waits for your instruction before starting it.
+Quoting triggers or discussing this skill does not invoke a council.
 
 Council participants form independent positions, cross-review them, and verify
 the chair's synthesis. The skill uses the host's available delegation tools and
@@ -41,7 +52,7 @@ enable tools, or change application settings.
 
 ## Optional managed installation
 
-[Download thoughts-managed.zip](https://github.com/sdesapio/skills/releases/download/thoughts-v1.0.0/thoughts-managed.zip)
+[Download thoughts-managed.zip](https://github.com/sdesapio/skills/releases/download/thoughts-v1.1.0/thoughts-managed.zip)
 if you want checksum checks, backups, rollback, and interrupted-update recovery.
 This package adds `scripts/install.py`. It needs Python 3.9+ on macOS or Linux,
 uses only the standard library, and requires neither Git nor network access.
@@ -119,7 +130,7 @@ python3 scripts/build_packages.py --output /tmp/thoughts-release
 
 The builder uses an explicit file list, produces both ZIPs and `SHA256SUMS.txt`,
 and uses fixed ZIP timestamps and permissions. Build from the reviewed release
-commit, tag it with a skill-specific version such as `thoughts-v1.0.0`, and attach
+commit, tag it with a skill-specific version such as `thoughts-v1.1.0`, and attach
 all three artifacts to that GitHub release. Update the versioned download links
 in this README and the repository catalog for each release. Generated artifacts
 are not committed to the repository.

@@ -1,10 +1,10 @@
 ---
 name: thoughts
 description: >-
-  Examine ideas with integrity, evidence, and valid reasoning. A substantive
-  "Thoughts?" request invokes independent council review and a compact substance
-  receipt. Ordinary opinion requests and reasoning challenges use the lighter
-  Method. Quoting the trigger or discussing this skill does not invoke a council.
+  Examine ideas with integrity, evidence, and valid reasoning. Thoughts requests,
+  opinions, and reasoning challenges use the Method in the current conversation
+  by default. Independent council review is opt-in when the user explicitly asks
+  for it. Quoting a trigger or discussing this skill does not invoke a council.
 ---
 
 # Thoughts
@@ -15,11 +15,12 @@ The framework has three parts: commitments, a shared Method, and a council workf
 
 ## Activation and user experience
 
-- **Full review:** A substantive request ending in "Thoughts?" (case-insensitive), a direct invocation of this skill to assess an idea, or an explicit request for the full Thoughts council. Run Council and append the Substance Receipt. Question simplicity or thread length alone does not cancel a full invocation.
-- **Lighter review:** Ordinary requests for an honest opinion or recommendation, or challenges to your reasoning. Apply Method in the current conversation; no council or receipt unless requested.
-- **User override:** "Quick take", "no council", or an equivalent explicit preference selects the lighter review even when paired with "Thoughts?". A request for full council selects full review even without the literal trigger. Honor explicit output preferences, including a request to omit the receipt.
-- **Mention is not invocation:** Quoting "Thoughts?", editing this skill, reviewing its instructions, or reporting the phrase from a document does not activate a council by itself. Follow the actual task. A full-review request about the skill itself can still invoke one explicitly.
-- Do not run a council merely because a topic seems bias-prone. Keep the commitments active without imposing the full procedure on unrelated work.
+- **Default — Method:** A substantive "Thoughts?" request, a direct invocation of this skill, an ordinary opinion request, or a reasoning challenge uses the full Method in the current conversation. Do not launch council participants or append a Substance Receipt by default. All integrity, evidence, identity, and non-contradiction requirements apply in this mode.
+- **Opt-in — council:** Run Council only when the user explicitly requests council review, for example "Thoughts? Full council" or "Run a council review." A request for a thorough or full assessment alone does not opt in. Once council review is requested, run its workflow and append the Substance Receipt unless the user asks to omit it; no additional confirmation is needed.
+- **Scope:** Council opt-in applies to the current request. Follow-up work needed to complete that review stays in scope; a new assessment returns to Method unless the user explicitly enables council for a longer scope, such as the rest of the conversation. Honor that scope until the user changes it. "No council" or "quick take" selects Method for the current request; an instruction to turn council off going forward ends a continuing opt-in.
+- **Suggestions:** If independent review could help resolve a material uncertainty, briefly suggest council review while still giving the useful assessment available through Method. Wait for the user's instruction before starting a council. Do not routinely ask the user to choose a mode or escalate automatically because a topic is difficult, consequential, or bias-prone.
+- **Mention is not invocation:** Quoted triggers, quoted requests for council, editing this skill, and discussion of its workflow are task content, not council authorization. Follow the user's actual request.
+- **Output preferences:** Honor explicit requests for a receipt or its omission independently of mode. Asking for a receipt alone does not authorize a council; label a Method-only receipt accordingly.
 
 For full review, briefly acknowledge that independent review is starting. During longer work, give meaningful progress updates. Return one integrated answer with a direct conclusion, its support, material uncertainty, and the compact receipt. Do not routinely present multiple essays, rankings, a debate transcript, or private reasoning traces. Summarize decisive reasons and evidence instead. No extra confirmation is needed for review already requested; this skill does not authorize unrelated external actions or changes to user settings.
 
@@ -106,6 +107,8 @@ For empirical conclusions, identify evidence that would change the assessment. F
 
 ## Council: full review
 
+Run this section only when council review is authorized under Activation.
+
 ### Setup and independence
 
 The current assistant is the chair. Use native subagent tools to launch **three separate participants** for independent work, in parallel when capacity permits. This is an explicit delegation instruction for full Thoughts review. Do not create separate user-owned tasks or use imaginary slash commands. Follow the host's actual tool schema and permissions.
@@ -181,7 +184,7 @@ Agreement after examination can be the correct result. Say so briefly and contri
 For full review, append a compact summary using the fields below. Use short clauses, combine closely related fields where helpful, and use "none" or "not applicable" honestly. Cite decisive evidence in the answer; do not repeat a bibliography. This is a summary of support and review work products, not a private reasoning transcript or proof of truth.
 
 ```text
-Review: completed council / partial council / same-model review / single-model fallback; actual participants and material limitations
+Review: single-model Method (no council requested) / completed council / partial council / same-model review / single-model fallback; actual participants and material limitations
 Claims and premises: empirical / inference / value (metric); decisive examined premise or assumption
 Evidence: verified support; unsupported claims and resulting limits, or none
 Challenge and resolution: strongest material objection; correction, reason for rejection, or unresolved issue

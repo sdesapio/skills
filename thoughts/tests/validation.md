@@ -111,3 +111,24 @@ only the managed download contains the installer.
 
 These tests validate packaging and installation behavior. They do not add new
 council behavioral evidence or establish support for Windows.
+
+## Opt-in council activation — 2026-09-20
+
+Thoughts now uses the full Method in the current conversation by default.
+Council review requires an explicit user request. A one-request opt-in covers
+follow-up work needed to finish that review, while a new assessment returns to
+Method unless a continuing opt-in was explicitly given. Suggestions, quoted
+requests, thoroughness requests, and receipt requests do not authorize a council.
+
+The skill-creator structural validator passed. All 22 existing installer and
+package integration tests passed with the revised runtime skill. These cover
+archive contents and portable installation, update, verification, and rollback;
+they do not exercise language-model routing.
+
+Evaluation fixtures now include paired Method/council release-decision packets,
+direct invocation, thoroughness and receipt requests, quoted opt-ins, new-request
+reset, continuing opt-in, request-specific overrides, revocation, and unaccepted
+suggestions. The activation text and fixture expectations were reviewed for
+consistency. These new model-behavior fixtures have not been executed as an
+independent agent evaluation. The earlier council observations above describe
+the then-current version and are not evidence of the new activation behavior.
