@@ -4,8 +4,8 @@ Each top-level skill folder is self-contained. Open a skill's instructions below
 or copy its folder from this repository; you do not need the other skills.
 
 - **[Thoughts](thoughts/README.md)** — Examine ideas with integrity, evidence,
-  and valid reasoning. [Download the skill](https://github.com/sdesapio/skills/releases/download/thoughts-v1.0.0/thoughts.zip)
-  or [download with the optional installer](https://github.com/sdesapio/skills/releases/download/thoughts-v1.0.0/thoughts-managed.zip).
+  and valid reasoning. [Download the skill](https://github.com/sdesapio/skills/releases/download/thoughts-v1.1.0/thoughts.zip)
+  or [download with the optional installer](https://github.com/sdesapio/skills/releases/download/thoughts-v1.1.0/thoughts-managed.zip).
 - **[Handoff](handoff/README.md)** — Preserve concise project state and prepare
   a continuation prompt for a fresh chat.
 - **[Project Docs](project-docs/SKILL.md)** — Maintain project architecture,
