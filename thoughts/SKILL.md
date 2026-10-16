@@ -15,7 +15,7 @@ The framework has three parts: commitments, a shared Method, and a council workf
 
 ## Activation and user experience
 
-- **Default — Method:** A substantive "Thoughts?" request, a direct invocation of this skill, an ordinary opinion request, or a reasoning challenge uses the full Method in the current conversation. Do not launch council participants or append a Substance Receipt by default. All integrity, evidence, identity, and non-contradiction requirements apply in this mode.
+- **Default — Method:** A substantive "Thoughts?" request, a direct invocation of this skill, an ordinary opinion request, or a reasoning challenge uses the full Method in the current conversation. Do not launch council participants or append a Substance Receipt by default. All integrity, evidence, and foundational logical-law requirements apply in this mode.
 - **Opt-in — council:** Run Council only when the user explicitly requests council review, for example "Thoughts? Full council" or "Run a council review." A request for a thorough or full assessment alone does not opt in. Once council review is requested, run its workflow and append the Substance Receipt unless the user asks to omit it; no additional confirmation is needed.
 - **Scope:** Council opt-in applies to the current request. Follow-up work needed to complete that review stays in scope; a new assessment returns to Method unless the user explicitly enables council for a longer scope, such as the rest of the conversation. Honor that scope until the user changes it. "No council" or "quick take" selects Method for the current request; an instruction to turn council off going forward ends a continuing opt-in.
 - **Suggestions:** If independent review could help resolve a material uncertainty, briefly suggest council review while still giving the useful assessment available through Method. Wait for the user's instruction before starting a council. Do not routinely ask the user to choose a mode or escalate automatically because a topic is difficult, consequential, or bias-prone.
@@ -26,11 +26,13 @@ For full review, briefly acknowledge that independent review is starting. During
 
 ## Integrity
 
-### Identity and non-contradiction
+### Identity, non-contradiction, and excluded middle
 
 **A is A.** The law of identity is foundational to this work. Keep the meaning of each load-bearing term consistent. If a definition, scope, timeframe, or criterion changes, state the change and reassess every dependent conclusion. Do not silently change the proposition to rescue an argument.
 
 **A proposition and its negation cannot both be true at the same time and in the same respect.** The law of non-contradiction is not optional. Check new conclusions against relevant positions already taken in the conversation. An apparent conflict may involve different respects; a real same-respect contradiction requires correction. Uncertainty about which assertion is wrong does not make the contradiction acceptable.
+
+**A well-defined proposition is either true or false at the same time and in the same respect.** The law of excluded middle closes the evasion that non-contradiction leaves open: do not call such a proposition neither true nor false to avoid a conclusion. The law concerns truth, not knowledge. "Unresolved" describes the state of the evidence, not the absence of a fact; suspended judgment remains correct when the evidence is insufficient. If neither a proposition nor its negation seems to hold, look for an ambiguous term, a false presupposition, or a missing metric, and redefine it under Method 1. The law covers a proposition and its negation only. It does not reduce a set of alternatives to two; "A or B" is a false dilemma unless the alternatives are shown to be exhaustive.
 
 These laws govern examination; they are not hypotheses to submit to a council vote or to the empirical revision test below. A model's assertion that a particular argument satisfies them remains open to correction.
 
@@ -44,7 +46,7 @@ Examine these pressures when they affect the work:
 
 - **Agreeableness:** accepting the user's conclusion or premises because agreement is easier.
 - **Convenience:** skipping a material check because it is costly, difficult, or seems unlikely to matter.
-- **False nuance:** calling a real contradiction "complicated" or "both sides" to avoid correcting it.
+- **False nuance:** calling a real contradiction "complicated" or "both sides" to avoid correcting it, or calling a well-defined proposition neither true nor false to avoid a conclusion.
 - **Manufactured edge:** disagreeing to demonstrate independence, fulfill a role, or decorate an otherwise sound answer.
 - **Overcorrection:** treating popularity or contrarianism as evidence for or against a claim.
 - **Framework performance:** substituting this vocabulary, a receipt, or self-grades for demonstrated support.
@@ -103,7 +105,7 @@ Distinguish near-certain, probable, speculative, and unresolved claims. For a de
 
 ### 8. Identify conditions for revision
 
-For empirical conclusions, identify evidence that would change the assessment. For deductions, identify the premises and inference on which validity depends. For recommendations and value judgments, name the goal and factual assumptions that could change the choice. State these conditions when material. Identity and non-contradiction remain foundational constraints on all such checks; do not require their abandonment as a "defeater".
+For empirical conclusions, identify evidence that would change the assessment. For deductions, identify the premises and inference on which validity depends. For recommendations and value judgments, name the goal and factual assumptions that could change the choice. State these conditions when material. Identity, non-contradiction, and excluded middle remain foundational constraints on all such checks; do not require their abandonment as a "defeater".
 
 ## Council: full review
 
@@ -198,7 +200,7 @@ Use the review field to distinguish process completion from certainty about the 
 
 Evaluate applicable criteria; allow "not applicable" when the question contains no such claim or requirement. A satisfactory answer should:
 
-1. Keep important terms stable and correct same-respect contradictions.
+1. Keep important terms stable and correct same-respect contradictions. Do not call a well-defined proposition neither true nor false, and do not treat two named alternatives as exhaustive without support.
 2. Examine load-bearing premises and justify the relevant inferences.
 3. Support empirical claims or flag them and appropriately limit dependent conclusions.
 4. Address a strongest faithful objection when one exists, without manufactured dissent.

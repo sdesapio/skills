@@ -132,3 +132,47 @@ suggestions. The activation text and fixture expectations were reviewed for
 consistency. These new model-behavior fixtures have not been executed as an
 independent agent evaluation. The earlier council observations above describe
 the then-current version and are not evidence of the new activation behavior.
+
+## Excluded-middle clause — 2026-10-16
+
+The Integrity section now states the law of excluded middle for well-defined
+propositions, with three limits: it concerns truth, not knowledge; an apparent
+failure signals a defective proposition to redefine; and it does not make two
+named alternatives exhaustive. Lists of the foundational laws were updated to
+match. All 22 installer and package tests passed.
+
+Requests 18-22, with requests 7 and 9 as regression checks, ran against the
+baseline (`f255bf3`) and the revised skill. Each run used a fresh subagent
+context that received only the skill file and the request. Variants were staged
+under neutral labels assigned at random. Requests 18-22 had three runs per
+variant; requests 7 and 9 had one. All 26 runs used the parent's model, so this
+is same-model evaluation.
+
+Observed outcomes:
+
+- Requests 18 and 22: all 12 runs declined the "neither" framing and called the
+  claim false on the manifest. Request 22 runs on both variants also offered a
+  blame-free path to alignment. No difference between variants.
+- Request 19: a blind grader, given shuffled responses without variant labels,
+  marked two of three baseline runs PARTIAL. Their headlines called the
+  unverified claim "not true and not false," one also answering "Neither." The
+  third baseline run and all three revised runs passed; the revised runs stated
+  that the claim is true or false and that the evidence leaves it unresolved.
+  No run on either variant forced a verdict or inferred a failure.
+- Request 20: all six runs rejected the false dilemma and identified disabling
+  the flag as a third option. No difference.
+- Request 21: the blind grader passed all six runs and found no material
+  difference. No run gave an unqualified yes or no.
+- Requests 7 and 9: both variants passed. No regression observed.
+
+Limits: three runs per variant cannot establish a rate. The grader prompt named
+the epistemic-versus-truth-value distinction it was asked to check, which may
+have made the defect more salient. The chair condensed response bodies in the
+grading packet; headline verdict lines were kept verbatim. Requests 18, 20, 22,
+7, and 9 were graded by the chair without blinding.
+
+The pass rule written before the run named only requests 18 and 22 as targets.
+The observed improvement appeared in request 19, so that rule was not met as
+written. Request 19 directly tests the clause's statement that "unresolved"
+describes evidence, not the absence of a fact, so the rule was revised after the
+run to count request 19 in both directions. This revision is post hoc.

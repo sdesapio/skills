@@ -1,8 +1,10 @@
 # Thoughts
 
-Examine ideas with integrity, evidence, and valid reasoning. Identity and
-noncontradiction are foundational; conclusions must follow from evidence and
-valid inference.
+Examine ideas with integrity, evidence, and valid reasoning. Conclusions must
+follow from evidence and valid inference.
+
+The skill rests on Aristotle's three laws of thought: identity,
+noncontradiction, and excluded middle.
 
 ## Download and install
 
@@ -30,7 +32,7 @@ ZIP can install it without GitHub access. Release assets also include
 
 **"Thoughts?"**, a direct skill invocation, opinions, and reasoning challenges
 use the full Method in the current conversation by default. Integrity, evidence,
-identity, and noncontradiction apply in every mode.
+and the foundational logical laws apply in every mode.
 
 Say **"Thoughts? Full council"** or **"Run a council review"** to opt into
 independent council review and its compact substance receipt. Council applies to
