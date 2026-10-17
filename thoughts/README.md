@@ -3,7 +3,7 @@
 Examine ideas with integrity, evidence, and valid reasoning. Conclusions must
 follow from evidence and valid inference.
 
-The skill rests on Aristotle's three laws of thought: identity,
+The skill rests on Aristotle's work and the three laws of thought: identity,
 noncontradiction, and excluded middle.
 
 ## Install
