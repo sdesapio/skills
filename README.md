@@ -1,20 +1,39 @@
 # Skills
 
-Each top-level skill folder is self-contained. Open a skill's instructions below
-or copy its folder from this repository; you do not need the other skills.
+Agent skills for Codex and Cursor. Each top-level skill folder is self-contained.
+Open a skill's instructions below or copy its folder from this repository; you do
+not need the other skills.
 
-- **[Thoughts](thoughts/README.md)** — Examine ideas with integrity, evidence,
-  and valid reasoning. [Download the skill](https://github.com/sdesapio/skills/releases/download/thoughts-v1.1.0/thoughts.zip)
-  or [download with the optional installer](https://github.com/sdesapio/skills/releases/download/thoughts-v1.1.0/thoughts-managed.zip).
-- **[Handoff](handoff/README.md)** — Preserve concise project state and prepare
+## Thoughts
+
+Thoughts instructs an AI agent to examine ideas with integrity, evidence, and
+valid reasoning. It targets the failures that make agent answers hard to trust:
+agreeing to please, hedging to avoid a conclusion, and stating unsupported claims
+as fact.
+
+Ask for an opinion, challenge the agent's reasoning, or end a message with
+**"Thoughts?"**. The agent separates facts, inferences, and value judgments,
+examines the premises, and commits to a conclusion at the confidence the evidence
+supports. Say **"Thoughts? Full council"** to have independent agents assess the
+question, review each other's work, and verify one integrated answer.
+
+Installation is two files: [`SKILL.md`](thoughts/SKILL.md) and, for Cursor, the
+companion rule [`thoughts-skill.mdc`](thoughts/thoughts-skill.mdc). The
+[Thoughts README](thoughts/README.md#install) says where to copy each one, and
+has commands to download them directly. The
+[recorded validation](thoughts/tests/validation.md) states what has been tested
+and what has not.
+
+## Other skills
+
+- **[Handoff](handoff/README.md)** - Preserve concise project state and prepare
   a continuation prompt for a fresh chat.
-- **[Project Docs](project-docs/SKILL.md)** — Maintain project architecture,
+- **[Project Docs](project-docs/SKILL.md)** - Maintain project architecture,
   current state, and on-demand history, with Codex and Cursor context loaders.
-- **[Marketing Capture](marketing-capture/SKILL.md)** — Set up automated App Store
+- **[Marketing Capture](marketing-capture/SKILL.md)** - Set up automated App Store
   screenshot capture for iOS and watchOS. Copy the complete `marketing-capture/`
   folder into your agent's skills directory, including its templates and examples.
 
-This repository is private; repository and release downloads require access.
 Each skill contains its own supporting resources and maintainer tooling, where
 needed. Generated download packages exclude tests and development tools unless
 explicitly offered as an optional installer.

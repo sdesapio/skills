@@ -6,12 +6,11 @@ follow from evidence and valid inference.
 The skill rests on Aristotle's three laws of thought: identity,
 noncontradiction, and excluded middle.
 
-## Download and install
+## Install
 
-[Download thoughts.zip](https://github.com/sdesapio/skills/releases/download/thoughts-v1.1.0/thoughts.zip)
-and extract it. It contains one `thoughts/` folder with the skill, these
-instructions, the MIT license, and the companion Cursor rule. No Git, Python,
-or installer is needed for manual installation.
+Installation is two files: [`SKILL.md`](SKILL.md) and the companion Cursor rule
+[`thoughts-skill.mdc`](thoughts-skill.mdc). No Git, Python, or installer is
+needed.
 
 For **Codex**, create `~/.agents/skills/thoughts/` and copy `SKILL.md` into it.
 
@@ -19,14 +18,27 @@ For **Cursor**, create `~/.cursor/skills/thoughts/` and copy `SKILL.md` into it.
 Also copy `thoughts-skill.mdc` into `~/.cursor/rules/`, creating that directory if
 needed. The rule points to the installed Cursor skill at the path above.
 
-Keep `LICENSE` with any copy you redistribute. Preserve existing local edits
-before replacing an installed file. If you already use the managed installer,
-use it for updates as well so its checksums and backups remain consistent.
-Start a fresh chat after installation so the host can load the skill.
+Or download them directly:
 
-Downloads from this private repository require access. A recipient of a shared
-ZIP can install it without GitHub access. Release assets also include
-`SHA256SUMS.txt` for checking the downloaded archives.
+```bash
+# Codex
+mkdir -p ~/.agents/skills/thoughts
+curl -fsSL -o ~/.agents/skills/thoughts/SKILL.md \
+  https://raw.githubusercontent.com/sdesapio/skills/master/thoughts/SKILL.md
+
+# Cursor
+mkdir -p ~/.cursor/skills/thoughts ~/.cursor/rules
+curl -fsSL -o ~/.cursor/skills/thoughts/SKILL.md \
+  https://raw.githubusercontent.com/sdesapio/skills/master/thoughts/SKILL.md
+curl -fsSL -o ~/.cursor/rules/thoughts-skill.mdc \
+  https://raw.githubusercontent.com/sdesapio/skills/master/thoughts/thoughts-skill.mdc
+```
+
+These commands overwrite existing files. Preserve local edits before running
+them. If you already use the managed installer, use it for updates as well so
+its checksums and backups remain consistent. Start a fresh chat after
+installation so the host can load the skill. Keep the [MIT license](LICENSE) with
+any copy you redistribute.
 
 ## Use
 
@@ -54,12 +66,12 @@ enable tools, or change application settings.
 
 ## Optional managed installation
 
-[Download thoughts-managed.zip](https://github.com/sdesapio/skills/releases/download/thoughts-v1.1.0/thoughts-managed.zip)
-if you want checksum checks, backups, rollback, and interrupted-update recovery.
-This package adds `scripts/install.py`. It needs Python 3.9+ on macOS or Linux,
-uses only the standard library, and requires neither Git nor network access.
+Use `scripts/install.py` if you want checksum checks, backups, rollback, and
+interrupted-update recovery. Clone this repository, or download it with GitHub's
+**Code > Download ZIP**. The installer needs Python 3.9+ on macOS or Linux and
+uses only the standard library.
 
-From inside the extracted `thoughts/` folder, select `codex`, `cursor`, or `both`:
+From inside the `thoughts/` folder, select `codex`, `cursor`, or `both`:
 
 ```bash
 python3 scripts/install.py --target both --dry-run
@@ -72,7 +84,7 @@ plus the companion rule for Cursor. It does not install documentation or tests
 into the app. Codex-only installation does not create or inspect an unmanaged
 Cursor installation, and vice versa.
 
-For updates, download and extract a new managed package, then run its installer.
+For updates, pull or download the repository again, then run the installer.
 Without `--target`, an update uses the previously recorded destinations; a first
 installation defaults to both apps. An explicit target adds or updates that app
 without removing or updating the other app's existing installation. All already
@@ -118,10 +130,9 @@ out.
 ## For maintainers
 
 This folder is the source of truth. All Thoughts-specific source, tools, and
-tests live here; sibling skill folders are not dependencies. The basic download
-contains only `SKILL.md`, `README.md`, `LICENSE`, and `thoughts-skill.mdc`. The
-managed download adds only `scripts/install.py`. Tests and the package builder
-remain in the repository.
+tests live here; sibling skill folders are not dependencies. The install
+instructions above read from `master`, so a push to `master` publishes the change.
+Review and test before pushing.
 
 From this source folder, run:
 
@@ -130,16 +141,17 @@ python3 -m unittest discover -s tests -v
 python3 scripts/build_packages.py --output /tmp/thoughts-release
 ```
 
-The builder uses an explicit file list, produces both ZIPs and `SHA256SUMS.txt`,
-and uses fixed ZIP timestamps and permissions. Build from the reviewed release
-commit, tag it with a skill-specific version such as `thoughts-v1.1.0`, and attach
-all three artifacts to that GitHub release. Update the versioned download links
-in this README and the repository catalog for each release. Generated artifacts
-are not committed to the repository.
+Versioned release packages are optional. The basic package contains only
+`SKILL.md`, `README.md`, `LICENSE`, and `thoughts-skill.mdc`; the managed package
+adds only `scripts/install.py`. The builder uses an explicit file list, produces
+both ZIPs and `SHA256SUMS.txt`, and uses fixed ZIP timestamps and permissions. To
+publish one, build from the reviewed commit, tag it with a skill-specific version
+such as `thoughts-v1.1.0`, and attach all three artifacts to that GitHub release.
+Generated artifacts are not committed to the repository.
 
 The installer reads the files in its own folder, including uncommitted edits.
-Review and commit source changes before deploying a release. If the skill gains
-runtime resources, update the installer and package file lists together.
+If the skill gains runtime resources, update the installer and package file lists
+together.
 
 [Behavioral fixtures](https://github.com/sdesapio/skills/blob/master/thoughts/tests/evaluation.md)
 and [recorded validation](https://github.com/sdesapio/skills/blob/master/thoughts/tests/validation.md)
